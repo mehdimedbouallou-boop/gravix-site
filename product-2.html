@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gravix | Horloge de table spéciale Hadj</title>
+  <meta name="description" content="Découvrez l’horloge de table spéciale Hadj de Gravix." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .order-form-wrapper {
+      margin-top: 22px;
+      display: none;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+    }
+
+    .order-form-wrapper.show {
+      display: block;
+    }
+
+    .order-form-title {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .order-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .order-form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .order-form-group label {
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .order-form-group input,
+    .order-form-group select {
+      width: 100%;
+      border: 1px solid #c9b8aa;
+      background: #ffffff;
+      color: #4b2e1f;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font: inherit;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .order-form-group input:focus,
+    .order-form-group select:focus {
+      border-color: rgba(215, 155, 82, 0.45);
+      box-shadow: 0 0 0 4px rgba(215, 155, 82, 0.08);
+    }
+
+    .order-form-group select option {
+      background: #ffffff;
+      color: #4b2e1f;
+    }
+
+    #deliveryPrice[readonly] {
+      background: #f7f2ed;
+      color: #4b2e1f;
+      font-weight: 700;
+      cursor: not-allowed;
+    }
+
+    .delivery-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .delivery-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .delivery-card.active {
+      border-color: rgba(215, 155, 82, 0.55);
+      box-shadow: 0 0 0 3px rgba(215, 155, 82, 0.10);
+    }
+
+    .delivery-card input {
+      display: none;
+    }
+
+    .delivery-card-title {
+      display: block;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .delivery-card-price {
+      color: var(--accent-strong);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .delivery-placeholder {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    .order-form-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .order-note {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 12px;
+    }
+
+    .form-status {
+      margin-top: 14px;
+      min-height: 24px;
+      color: var(--accent-strong);
+      font-weight: 600;
+    }
+
+    body.ar .order-form-wrapper,
+    body.ar .order-form-group {
+      text-align: right;
+    }
+
+    @media (max-width: 640px) {
+      .order-form-grid,
+      .delivery-options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-bg"></div>
+
+  <header class="header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <img src="images/logo-gravix.png" alt="Logo Gravix" class="brand-logo" />
+        <div class="brand-text">
+          <span class="brand-name">GRAVIX</span>
+          <span class="brand-subtitle">Gravure laser</span>
+        </div>
+      </a>
+
+      <nav class="nav" id="navMenu">
+        <a href="index.html">Accueil</a>
+        <a href="products.html">Produits</a>
+        <a href="custom.html">Sur mesure</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="lang-switch" id="langToggle" aria-label="Changer la langue">
+          <span class="lang-option active" id="frLabel">🇫🇷 FR</span>
+          <span class="lang-divider">|</span>
+          <span class="lang-option" id="arLabel">🇩🇿 AR</span>
+        </button>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section product-page-section">
+      <div class="container product-layout">
+        <div class="product-gallery single-product-gallery">
+          <img src="images/cl1.jpg" alt="Horloge de table spéciale Hadj" class="main-product-image" />
+        </div>
+
+        <div class="product-details">
+          <span class="section-label">Produit Gravix</span>
+          <h1 class="product-page-title">Porte clé maison "Blessed Home"</h1>
+          <p class="product-page-price">1 500 DA</p>
+
+          <div class="product-actions">
+            <button type="button" class="btn btn-primary" id="showOrderFormBtn">Commander</button>
+            <a href="product.html" class="btn btn-secondary">Retour aux produits</a>
+          </div>
+
+          <div class="order-form-wrapper" id="orderFormWrapper">
+            <h2 class="order-form-title">Informations de commande</h2>
+
+            <form id="orderForm">
+              <input type="hidden" name="access_key" value="608be9a9-3b60-4dbd-a5cd-54630603dfcf" />
+              <input type="hidden" name="subject" value="Nouvelle commande - ZORIA site" />
+              <input type="hidden" name="from_name" value="ZORIA site" />
+              <input type="hidden" name="Produit" value="Horloge de table spéciale Hadj" />
+              <input type="hidden" name="Prix" value="1500 DA" />
+
+              <div class="order-form-grid">
+                <div class="order-form-group">
+                  <label for="lastName">Nom</label>
+                  <input type="text" id="lastName" name="Nom" required />
+                </div>
+
+                <div class="order-form-group">
+                  <label for="firstName">Prenom</label>
+                  <input type="text" id="firstName" name="Prenom" required />
+                </div>
+
+                <div class="order-form-group">
+                  <label for="phone">Telephone</label>
+                  <input type="tel" id="phone" name="Telephone" required />
+                </div>
+
+                
+                <div class="order-form-group">
+                  <label for="wilaya">Wilaya</label>
+                  <select id="wilaya" name="Wilaya" required>
+                    <option value="">Choisir une wilaya</option>
+                    <option value="01">01 - Adrar</option>
+                    <option value="02">02 - Chlef</option>
+                    <option value="03">03 - Laghouat</option>
+                    <option value="04">04 - Oum El Bouaghi</option>
+                    <option value="05">05 - Batna</option>
+                    <option value="06">06 - Béjaïa</option>
+                    <option value="07">07 - Biskra</option>
+                    <option value="08">08 - Béchar</option>
+                    <option value="09">09 - Blida</option>
+                    <option value="10">10 - Bouira</option>
+                    <option value="11">11 - Tamanrasset</option>
+                    <option value="12">12 - Tébessa</option>
+                    <option value="13">13 - Tlemcen</option>
+                    <option value="14">14 - Tiaret</option>
+                    <option value="15">15 - Tizi Ouzou</option>
+                    <option value="16">16 - Alger</option>
+                    <option value="17">17 - Djelfa</option>
+                    <option value="18">18 - Jijel</option>
+                    <option value="19">19 - Sétif</option>
+                    <option value="20">20 - Saïda</option>
+                    <option value="21">21 - Skikda</option>
+                    <option value="22">22 - Sidi Bel Abbès</option>
+                    <option value="23">23 - Annaba</option>
+                    <option value="24">24 - Guelma</option>
+                    <option value="25">25 - Constantine</option>
+                    <option value="26">26 - Médéa</option>
+                    <option value="27">27 - Mostaganem</option>
+                    <option value="28">28 - M'Sila</option>
+                    <option value="29">29 - Mascara</option>
+                    <option value="30">30 - Ouargla</option>
+                    <option value="31">31 - Oran</option>
+                    <option value="32">32 - El Bayadh</option>
+                    <option value="33">33 - Illizi</option>
+                    <option value="34">34 - Bordj Bou Arreridj</option>
+                    <option value="35">35 - Boumerdès</option>
+                    <option value="36">36 - El Tarf</option>
+                    <option value="37">37 - Tindouf</option>
+                    <option value="38">38 - Tissemsilt</option>
+                    <option value="39">39 - El Oued</option>
+                    <option value="40">40 - Khenchela</option>
+                    <option value="41">41 - Souk Ahras</option>
+                    <option value="42">42 - Tipaza</option>
+                    <option value="43">43 - Mila</option>
+                    <option value="44">44 - Aïn Defla</option>
+                    <option value="45">45 - Naâma</option>
+                    <option value="46">46 - Aïn Témouchent</option>
+                    <option value="47">47 - Ghardaïa</option>
+                    <option value="48">48 - Relizane</option>
+                    <option value="49">49 - Timimoun</option>
+                    <option value="50">50 - Bordj Badji Mokhtar</option>
+                    <option value="51">51 - Ouled Djellal</option>
+                    <option value="52">52 - Béni Abbès</option>
+                    <option value="53">53 - In Salah</option>
+                    <option value="54">54 - In Guezzam</option>
+                    <option value="55">55 - Touggourt</option>
+                    <option value="56">56 - Djanet</option>
+                    <option value="57">57 - El M'Ghair</option>
+                    <option value="58">58 - El Meniaa</option>
+                  </select>
+                </div>
+
+                <div class="order-form-group">
+                  <label for="commune">Commune</label>
+                  <select id="commune" name="Commune" required disabled>
+                    <option value="">Choisir d’abord une wilaya</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="order-form-group" style="margin-top: 14px;">
+                <label>Mode de livraison</label>
+                <div class="delivery-options">
+                  <label class="delivery-card" id="deliveryHomeCard">
+                    <input type="radio" name="Shipping mode" value="Livraison a domicile" disabled />
+                    <span class="delivery-card-title">Livraison à domicile</span>
+                    <span class="delivery-card-price" id="homePrice">—</span>
+                  </label>
+
+                  <label class="delivery-card" id="deliveryDeskCard">
+                    <input type="radio" name="Shipping mode" value="Livraison au bureau" disabled />
+                    <span class="delivery-card-title">Livraison au bureau</span>
+                    <span class="delivery-card-price" id="deskPrice">—</span>
+                  </label>
+                </div>
+                <p class="delivery-placeholder" id="deliveryPlaceholder">
+                  Choisir d’abord une commune
+                </p>
+              </div>
+
+              <div class="order-form-group" style="margin-top: 14px;">
+                <label for="deliveryPrice">Shipping price</label>
+                <input
+                  type="text"
+                  id="deliveryPrice"
+                  name="Shipping price"
+                  value=""
+                  placeholder="Le prix apparaîtra ici"
+                  readonly
+                />
+              </div>
+
+              
+
+              <div class="order-form-actions">
+                <button type="submit" class="btn btn-primary" id="submitOrderBtn">Valider la commande</button>
+                <button type="button" class="btn btn-secondary" id="hideOrderFormBtn">Fermer</button>
+              </div>
+
+              <p class="order-note"></p>
+              <p class="form-status" id="formStatus"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contact">
+    <div class="container footer-grid">
+      <div>
+        <h3 class="footer-title">GRAVIX</h3>
+        <p class="footer-text">Gravure laser moderne, simple et subtile.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-subtitle">Liens de contact</h4>
+        <ul class="footer-links">
+          <li><a href="https://wa.me/213559625588" target="_blank" rel="noopener noreferrer">WhatsApp / Téléphone</a></li>
+          <li><a href="https://www.facebook.com/share/1EeF8qv5Ep/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+          <li><a href="https://www.instagram.com/gravix_deco/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-subtitle">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="product.html">Produits</a></li>
+          <li><a href="custom.html">Sur mesure</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© <span id="year"></span> Gravix. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const showOrderFormBtn = document.getElementById("showOrderFormBtn");
+    const hideOrderFormBtn = document.getElementById("hideOrderFormBtn");
+    const orderFormWrapper = document.getElementById("orderFormWrapper");
+    const orderForm = document.getElementById("orderForm");
+    const submitOrderBtn = document.getElementById("submitOrderBtn");
+    const formStatus = document.getElementById("formStatus");
+
+    const wilayaSelect = document.getElementById("wilaya");
+    const communeSelect = document.getElementById("commune");
+    const deliveryPriceInput = document.getElementById("deliveryPrice");
+    const deliveryPlaceholder = document.getElementById("deliveryPlaceholder");
+
+    const deliveryHomeCard = document.getElementById("deliveryHomeCard");
+    const deliveryDeskCard = document.getElementById("deliveryDeskCard");
+
+    const deliveryHomeRadio = deliveryHomeCard.querySelector('input[value="Livraison a domicile"]');
+    const deliveryDeskRadio = deliveryDeskCard.querySelector('input[value="Livraison au bureau"]');
+
+    const homePrice = document.getElementById("homePrice");
+    const deskPrice = document.getElementById("deskPrice");
+
+    let communesData = [];
+
+    const DELIVERY_PRICES = {
+      "01": { home: 1050, desk: 850 },
+      "02": { home: 900, desk: 650 },
+      "03": { home: 950, desk: 750 },
+      "04": { home: 900, desk: 650 },
+      "05": { home: 900, desk: 650 },
+      "06": { home: 900, desk: 650 },
+      "07": { home: 950, desk: 750 },
+      "08": { home: 950, desk: 750 },
+      "09": { home: 900, desk: 650 },
+      "10": { home: 900, desk: 650 },
+      "11": { home: 1600, desk: 1400 },
+      "12": { home: 950, desk: 750 },
+      "13": { home: 590, desk: 450 },
+      "14": { home: 900, desk: 650 },
+      "15": { home: 900, desk: 650 },
+      "16": { home: 700, desk: 550 },
+      "17": { home: 950, desk: 750 },
+      "18": { home: 900, desk: 650 },
+      "19": { home: 900, desk: 650 },
+      "20": { home: 900, desk: 650 },
+      "21": { home: 900, desk: 650 },
+      "22": { home: 700, desk: 550 },
+      "23": { home: 900, desk: 650 },
+      "24": { home: 900, desk: 650 },
+      "25": { home: 900, desk: 650 },
+      "26": { home: 900, desk: 650 },
+      "27": { home: 900, desk: 650 },
+      "28": { home: 900, desk: 650 },
+      "29": { home: 900, desk: 650 },
+      "30": { home: 950, desk: 750 },
+      "31": { home: 900, desk: 650 },
+      "32": { home: 1050, desk: 850 },
+      "33": { home: 1600, desk: 1400 },
+      "34": { home: 900, desk: 650 },
+      "35": { home: 900, desk: 650 },
+      "36": { home: 900, desk: 650 },
+      "37": { home: 1600, desk: 1400 },
+      "38": { home: 900, desk: 650 },
+      "39": { home: 950, desk: 750 },
+      "40": { home: 900, desk: 650 },
+      "41": { home: 900, desk: 650 },
+      "42": { home: 900, desk: 650 },
+      "43": { home: 900, desk: 650 },
+      "44": { home: 900, desk: 650 },
+      "45": { home: 900, desk: 650 },
+      "46": { home: 700, desk: 550 },
+      "47": { home: 950, desk: 750 },
+      "48": { home: 900, desk: 650 },
+      "49": { home: 1050, desk: 850 },
+      "50": { home: 1050, desk: 850 },
+      "51": { home: 950, desk: 750 },
+      "52": { home: 950, desk: 750 },
+      "53": { home: 1600, desk: 1400 },
+      "54": { home: 1600, desk: 1400 },
+      "55": { home: 950, desk: 750 },
+      "56": { home: 1600, desk: 1400 },
+      "57": { home: 950, desk: 750 },
+      "58": { home: 950, desk: 750 }
+    };
+
+    function normalizeCode(code) {
+      return String(code).padStart(2, "0");
+    }
+
+    function resetCommuneSelect(message = "Choisir d’abord une wilaya") {
+      communeSelect.innerHTML = `<option value="">${message}</option>`;
+      communeSelect.disabled = true;
+    }
+
+    function resetDeliveryOptions(message = "Choisir d’abord une commune") {
+      deliveryHomeRadio.checked = false;
+      deliveryDeskRadio.checked = false;
+      deliveryHomeRadio.disabled = true;
+      deliveryDeskRadio.disabled = true;
+      deliveryHomeCard.classList.remove("active");
+      deliveryDeskCard.classList.remove("active");
+      homePrice.textContent = "—";
+      deskPrice.textContent = "—";
+      deliveryPriceInput.value = "";
+      deliveryPlaceholder.textContent = message;
+    }
+
+    function fillCommunes(wilayaCode) {
+      const selectedCode = normalizeCode(wilayaCode);
+
+      const filtered = communesData
+        .filter((item) => normalizeCode(item.wilaya_code) === selectedCode)
+        .sort((a, b) =>
+          String(a.commune_name_ascii).localeCompare(String(b.commune_name_ascii), "fr", {
+            sensitivity: "base"
+          })
+        );
+
+      communeSelect.innerHTML = '<option value="">Choisir une commune</option>';
+
+      filtered.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = item.commune_name_ascii;
+        option.textContent = item.commune_name_ascii;
+        communeSelect.appendChild(option);
+      });
+
+      communeSelect.disabled = filtered.length === 0;
+
+      if (filtered.length === 0) {
+        communeSelect.innerHTML = '<option value="">Aucune commune trouvée</option>';
+      }
+
+      resetDeliveryOptions();
+    }
+
+    function enableDeliveryOptions() {
+      const wilayaCode = wilayaSelect.value;
+      const prices = DELIVERY_PRICES[wilayaCode];
+
+      if (!prices) {
+        resetDeliveryOptions("Aucun tarif trouvé pour cette wilaya");
+        return;
+      }
+
+      deliveryHomeRadio.disabled = false;
+      deliveryDeskRadio.disabled = false;
+      homePrice.textContent = `${prices.home} DA`;
+      deskPrice.textContent = `${prices.desk} DA`;
+      deliveryPlaceholder.textContent = "Choisissez un mode de livraison";
+    }
+
+    function selectDelivery(type) {
+      const wilayaCode = wilayaSelect.value;
+      const prices = DELIVERY_PRICES[wilayaCode];
+      if (!prices) return;
+
+      deliveryHomeCard.classList.remove("active");
+      deliveryDeskCard.classList.remove("active");
+
+      if (type === "home") {
+        deliveryHomeRadio.checked = true;
+        deliveryHomeCard.classList.add("active");
+        deliveryPriceInput.value = `${prices.home}`;
+      } else {
+        deliveryDeskRadio.checked = true;
+        deliveryDeskCard.classList.add("active");
+        deliveryPriceInput.value = `${prices.desk}`;
+      }
+    }
+
+    async function loadCommunes() {
+      try {
+        resetCommuneSelect("Chargement des communes...");
+        const response = await fetch("data/datacommunes-algerie.json");
+        if (!response.ok) throw new Error("Impossible de charger le fichier local des communes.");
+        const payload = await response.json();
+        if (!Array.isArray(payload)) throw new Error("Le fichier JSON des communes n'est pas valide.");
+
+        communesData = payload.filter(
+          (item) => item && item.wilaya_code && item.commune_name_ascii
+        );
+
+        resetCommuneSelect();
+        resetDeliveryOptions();
+      } catch (error) {
+        console.error(error);
+        resetCommuneSelect("Erreur de chargement des communes");
+        resetDeliveryOptions("Choisir d’abord une commune");
+      }
+    }
+
+    if (showOrderFormBtn && orderFormWrapper) {
+      showOrderFormBtn.addEventListener("click", () => {
+        orderFormWrapper.classList.add("show");
+        orderFormWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
+    if (hideOrderFormBtn && orderFormWrapper) {
+      hideOrderFormBtn.addEventListener("click", () => {
+        orderFormWrapper.classList.remove("show");
+      });
+    }
+
+    if (orderForm) {
+      orderForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const selectedDelivery = orderForm.querySelector('input[name="Shipping mode"]:checked');
+        if (!selectedDelivery) {
+          formStatus.textContent = "Veuillez choisir un mode de livraison.";
+          return;
+        }
+
+        formStatus.textContent = "Envoi en cours...";
+        submitOrderBtn.disabled = true;
+
+        const wilayaText = wilayaSelect.options[wilayaSelect.selectedIndex]?.text || "";
+        const formData = new FormData(orderForm);
+
+        formData.set("Wilaya", wilayaText);
+        formData.set("Commune", communeSelect.value || "");
+        formData.set("Shipping mode", selectedDelivery.value);
+        formData.set("Shipping price", deliveryPriceInput.value || "");
+
+        try {
+          const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            formStatus.textContent = "Commande envoyée avec succès.";
+            orderForm.reset();
+            resetCommuneSelect();
+            resetDeliveryOptions();
+            setTimeout(() => {
+              orderFormWrapper.classList.remove("show");
+              formStatus.textContent = "";
+            }, 1200);
+          } else {
+            console.error(data);
+            formStatus.textContent = "Erreur lors de l'envoi. Vérifiez la clé ou réessayez.";
+          }
+        } catch (error) {
+          console.error(error);
+          formStatus.textContent = "Une erreur réseau s'est produite. Réessayez.";
+        } finally {
+          submitOrderBtn.disabled = false;
+        }
+      });
+    }
+
+    if (wilayaSelect && communeSelect) {
+      loadCommunes();
+
+      wilayaSelect.addEventListener("change", () => {
+        const wilayaCode = wilayaSelect.value;
+
+        if (!wilayaCode) {
+          resetCommuneSelect();
+          resetDeliveryOptions("Choisir d’abord une commune");
+          return;
+        }
+
+        fillCommunes(wilayaCode);
+      });
+
+      communeSelect.addEventListener("change", () => {
+        if (!communeSelect.value) {
+          resetDeliveryOptions("Choisir d’abord une commune");
+          return;
+        }
+
+        enableDeliveryOptions();
+      });
+
+      deliveryHomeCard.addEventListener("click", () => {
+        if (!deliveryHomeRadio.disabled) {
+          selectDelivery("home");
+        }
+      });
+
+      deliveryDeskCard.addEventListener("click", () => {
+        if (!deliveryDeskRadio.disabled) {
+          selectDelivery("desk");
+        }
+      });
+    }
+  </script>
+</body>
+</html>
